@@ -1,0 +1,91 @@
+name: Run Jupyter Notebooks
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  run-notebooks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install chemaxon jupyter nbconvert ipykernel
+          python -m ipykernel install --user --name python3
+
+      - name: Run 01_basic_functions.ipynb
+        run: |
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=600 \
+            --output /tmp/01_basic_functions_executed.ipynb \
+            jupyter/01_basic_functions.ipynb
+
+      - name: Run 02_calculators.ipynb
+        run: |
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=600 \
+            --output /tmp/02_calculators_executed.ipynb \
+            jupyter/02_calculators.ipynb
+
+      - name: Run 03_molecular_similarity.ipynb
+        run: |
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=600 \
+            --output /tmp/03_molecular_similarity_executed.ipynb \
+            jupyter/03_molecular_similarity.ipynb
+
+      - name: Run 04_standardizer.ipynb
+        run: |
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=600 \
+            --output /tmp/04_standardizer_executed.ipynb \
+            jupyter/04_standardizer.ipynb
+
+      - name: Run 05_structure_checker.ipynb
+        run: |
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=600 \
+            --output /tmp/05_structure_checker_executed.ipynb \
+            jupyter/05_structure_checker.ipynb
+
+      - name: Run 06_molecule_search.ipynb
+        run: |
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=600 \
+            --output /tmp/06_molecule_search_executed.ipynb \
+            jupyter/06_molecule_search.ipynb
+
+      - name: Run 07_pandas_integration_examples.ipynb
+        run: |
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=600 \
+            --output /tmp/07_pandas_integration_examples_executed.ipynb \
+            jupyter/07_pandas_integration_examples.ipynb
+
+      - name: Run 08_fingerprint_calculations.ipynb
+        run: |
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=600 \
+            --output /tmp/08_fingerprint_calculations_executed.ipynb \
+            jupyter/08_fingerprint_calculations.ipynb
+
+      - name: Upload executed notebooks as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: executed-notebooks
+          path: /tmp/*_executed.ipynb
+          retention-days: 7
