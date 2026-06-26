@@ -11,4 +11,4 @@ This repository contains usage examples for [Chemaxon Python API](https://docs.c
 ## Note
 
 If you have any question, suggestion please feel free to contact us via
-[FreshDesk support](https://chemaxon.freshdesk.com/a/tickets/new)
+[Chemaxon Support Portal](https://chemaxon.freshdesk.com/a/tickets/new)
