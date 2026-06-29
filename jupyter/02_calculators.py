@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.19.3
+#       jupytext_version: 1.19.4
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -36,7 +36,7 @@ from chemaxon.calculations import pka
 mol = import_mol('aspirin')
 
 pka_result = pka(mol)
-pka_result.structure
+pka_result.mol
 
 # %%
 import sys
