@@ -36,6 +36,9 @@ hit.hit_indices
 # %% [markdown]
 # ### **Duplicate search, setting search options**
 
+# %% [markdown]
+# **Note:** In case of duplicate search, the used tautomerization mode is **_generic_**. Which means, that all the theoretically possible tautomers of the target  is matched with the query structure itself.
+
 # %%
 duplicate_search = MoleculeSearch(search_type=SearchType.DUPLICATE)
 hit = duplicate_search.find(query, target)
