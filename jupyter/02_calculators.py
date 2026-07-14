@@ -253,3 +253,23 @@ mol = import_mol('CC(=O)\\C=C(/O)CC1=CC=CC=C1')
 advanced_options = TautomerAdvancedOptions()
 advanced_options.protect_double_bond_stereo = True
 major_tautomer(mol, options=advanced_options)
+
+# %% [markdown]
+# ### **Geometrical calculations**
+
+# %% [markdown]
+# #### Polar Surface Area (2D) 
+
+# %% [markdown]
+# For more information about this plugin, check the [public documentation](https://docs.chemaxon.com/latest/calculators_polar-surface-area-plugin-2d.html).
+
+# %%
+from chemaxon.calculations import polar_surface_area
+
+mol_psa = import_mol('CC(=O)OC1=CC=CC=C1C(O)=O')
+psa_value = polar_surface_area(mol_psa)
+
+print('The molecule: (aspirin)')
+display(mol_psa)
+print('Polar Surface Area value: ' + str(psa_value))
+
