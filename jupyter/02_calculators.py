@@ -273,3 +273,65 @@ print('The molecule: (aspirin)')
 display(mol_psa)
 print('Polar Surface Area value: ' + str(psa_value))
 
+
+# %% [markdown]
+# ### **Hückel Analysis**
+
+# %% [markdown]
+# Several methods are available that are based on the Hückel Molecular Orbital (HMO) theorem/method. An example for each on a `chemaxon.Molecule` (these can also be calculated on specific pH values):
+
+# %%
+from chemaxon.calculations import (hmo_electrophilic_localization_energy,
+                                    hmo_nucleophilic_localization_energy, hmo_electron_density,
+                                    hmo_charge_density, hmo_electrophilic_order,
+                                    hmo_nucleophilic_order, hmo_pi_energy)
+from chemaxon.io import import_mol
+
+mol_hmo = import_mol('CN1C=NC2=C1C(=O)NC(=O)N2C')
+
+electr_localization_energy = hmo_electrophilic_localization_energy(mol_hmo)
+nucleo_localization_energy = hmo_nucleophilic_localization_energy(mol_hmo)
+electr_dens = hmo_electron_density(mol_hmo)
+ch_dens = hmo_charge_density(mol_hmo)
+electr_ord = hmo_electrophilic_order(mol_hmo)
+nucl_ord = hmo_nucleophilic_order(mol_hmo)
+pi_energy = hmo_pi_energy(mol_hmo)
+
+print('The molecule:\n')
+display(toluene)
+print()
+
+print('L(+) localization energy by atom indices:')
+for hmo_val in electr_localization_energy:
+    print('\t ' + str(hmo_val.atom_index) + ': ' + str(hmo_val.value))
+
+print()
+
+print('L(-) localization energy by atom indices:')
+for hmo_val in nucleo_localization_energy:
+    print('\t ' + str(hmo_val.atom_index) + ': ' + str(hmo_val.value))
+
+print()
+print('Electrophilic densities by atom indices:')
+for hmo_val in electr_dens:
+    print('\t ' + str(hmo_val.atom_index) + ': ' + str(hmo_val.value))
+
+print()
+print('Charge densities by atom indices:')
+for hmo_val in ch_dens:
+    print('\t ' + str(hmo_val.atom_index) + ': ' + str(hmo_val.value))
+
+print()
+print('E(+) orders by atom indices:')
+for hmo_val in electr_ord:
+    print('\t ' + str(hmo_val.atom_index) + ': ' + str(hmo_val.order))
+
+print()
+print('Nu(-) orders by atom indices:')
+for hmo_val in nucl_ord:
+    print('\t ' + str(hmo_val.atom_index) + ': ' + str(hmo_val.order))
+
+print()
+print('Pi energy: '+ str(pi_energy))
+
+# %%
