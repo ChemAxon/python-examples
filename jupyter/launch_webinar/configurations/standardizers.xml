@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- This is the Chemaxon AppSci internally reccomended config as of 16DEC2025, with the exception that neutralize has been commented out -->
+<StandardizerConfiguration Version="0.1">
+  <Actions>
+    <Dearomatize ID="Dearomatize"/>
+    <ExpandSgroups ID="Expand S-groups"/>
+    <RemoveExplicitH Bridgehead="false" Charged="false" Hconnected="false" ID="Remove Explicit Hydrogens" Isotopic="false" Lonely="false" Mapped="false" Metalconnected="true" Polymerendgroup="false" Radical="false" Sgroup="false" Sgroupend="false" Valenceerror="false" Wedged="false"/>
+    <Transformation Exact="false" ID="Transform Nitro" SearchOptions="" Structure="[O:3]=[N:1]=[O:2]&gt;&gt;[#8-:2]-[#7+:1]=[O:3]" format="cxsmarts"/>
+    <Clean2D ID="Clean 2D" Type="Partial"/>
+    <!-- <Neutralize ID="Neutralize"/> -->
+    <RemoveExplicitH Bridgehead="false" Charged="false" Hconnected="false" ID="Remove Explicit Hydrogens" Isotopic="false" Lonely="false" Mapped="false" Metalconnected="true" Polymerendgroup="false" Radical="false" Sgroup="false" Sgroupend="false" Valenceerror="false" Wedged="false"/>
+  </Actions>
+</StandardizerConfiguration>
