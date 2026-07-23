@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<checkers>
+  <AliasChecker fixMode="fix" fixerClassName="chemaxon.fixers.ConvertAliasToGroupFixer"/>
+  <AromaticityErrorChecker fixMode="fix" fixerClassName="chemaxon.fixers.DearomatizeFixer" type="general"/>
+  <AtomMapChecker fixMode="fix" fixerClassName="chemaxon.fixers.RemoveAtomMapFixer"/>
+  <AtomQueryPropertyChecker aromaticity="true" connectionCount="true" explicitConnectionCount="true" fixMode="fix" fixerClassName="chemaxon.fixers.RemoveAtomQueryPropertyFixer" hydrogenCount="true" implicitHydrogenCount="true" recursiveSmarts="false" ringBondCount="true" ringCount="true" smallestRingSize="true" substitutionCount="true" unsaturation="true"/>
+  <AtomValueChecker fixMode="fix" fixerClassName="chemaxon.fixers.RemoveAtomValueFixer"/>
+  <BracketsChecker fixMode="fix" fixerClassName="chemaxon.fixers.RemoveBracketsFixer"/>
+  <ChiralFlagErrorChecker fixMode="fix" fixerClassName="chemaxon.fixers.RemoveInvalidChiralFlagFixer"/>
+  <CoordinationSystemErrorChecker fixMode="fix" fixerClassName="chemaxon.fixers.RemoveBondFixer"/>
+  <CovalentCounterionChecker fixMode="fix" fixerClassName="chemaxon.fixers.ConvertToIonicFormFixer"/>
+  <DoubleBondStereoErrorChecker fixMode="fix" fixerClassName="chemaxon.fixers.ConvertToPlainDoubleBondFixer"/>
+  <ExplicitLonePairChecker fixMode="fix" fixerClassName="chemaxon.fixers.RemoveAtomFixer"/>
+  <IncorrectTetrahedralStereoChecker fixMode="fix" fixerClassName="chemaxon.fixers.ClearWedgeFixer"/>
+  <MultiCenterChecker fixMode="fix" fixerClassName="chemaxon.fixers.RemoveAtomFixer"/>
+  <NonStandardWedgeSchemeChecker fixMode="fix" fixerClassName="chemaxon.fixers.RearrangeWedgesFixer"/>
+  <NonStereoWedgeBondChecker fixMode="fix" fixerClassName="chemaxon.fixers.FlipWedgeBondFixer"/>
+  <PseudoAtomChecker excluded="" fixMode="fix" fixerClassName="chemaxon.fixers.ConvertPseudoToGroupFixer"/>
+  <QueryAtomChecker fixMode="do_not_fix" fixerClassName="chemaxon.fixers.ConvertToCarbonFixer"/>
+  <QueryBondChecker fixMode="do_not_fix" fixerClassName="chemaxon.fixers.ConvertToSingleBondFixer"/>
+  <RatomChecker all="true" disconnected="true" fixMode="do_not_fix" generic="true" linker="true" nested="true"/>
+  <RadicalChecker fixMode="do_not_fix" fixerClassName="chemaxon.fixers.RemoveRadicalFixer"/>
+  <RareElementChecker fixMode="fix"/>
+  <ReactingCenterBondMarkChecker fixMode="fix" fixerClassName="chemaxon.fixers.RemoveReactingCenterBondMarkFixer"/>
+  <StarAtomChecker fixMode="do_not_fix" fixerClassName="chemaxon.fixers.ConvertToCarbonFixer"/>
+  <StereoCareBoxChecker fixMode="fix" fixerClassName="chemaxon.fixers.RemoveStereoCareBoxFixer"/>
+  <StereoInversionRetentionMarkChecker fixMode="fix" fixerClassName="chemaxon.fixers.RemoveStereoInversionRetentionMarkFixer"/>
+  <StraightDoubleBondChecker fixMode="fix" fixerClassName="chemaxon.fixers.ConvertToCrossedDoubleBondFixer"/>
+  <ThreeDimensionChecker fixMode="fix" fixerClassName="chemaxon.fixers.CleanFixer"/>
+  <ValenceErrorChecker allowTraditionalNitrogen="false" fixMode="fix" fixerClassName="chemaxon.fixers.ValenceFixer"/>
+  <ValencePropertyChecker defaultValence="true" fixMode="fix" fixerClassName="chemaxon.fixers.RemoveValencePropertyFixer" nonDefaultValence="true"/>
+  <WigglyBondChecker fixMode="fix" fixerClassName="chemaxon.fixers.ConvertToSingleBondFixer"/>
+  <WigglyDoubleBondChecker fixMode="fix" fixerClassName="chemaxon.fixers.ConvertToCrossedDoubleBondFixer"/>
+</checkers>
