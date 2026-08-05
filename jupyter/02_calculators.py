@@ -343,7 +343,7 @@ print('Pi energy: '+ str(pi_energy))
 # - [solvent accessible molecular surface area](https://docs.chemaxon.com/latest/calculators_molecular-surface-area-plugin-3d.html)
 
 # %%
-from chemaxon.io import import_mol
+from chemaxon.io import import_mol, export_mol
 from chemaxon.calculations import van_der_waals_surface_area, solvent_accessible_surface_area
 
 aspirin = import_mol('CC(=O)OC1=CC=CC=C1C(O)=O')
@@ -351,4 +351,13 @@ vdw_result = van_der_waals_surface_area(aspirin)
 asa_result = solvent_accessible_surface_area(aspirin)
 
 print('van der Waals surface area of aspirin: ' + str(vdw_result.surface_area))
-print('solvent accessible surface area of aspirin: ' + str(asa_result.surface_area))
+print('van der Waals increments of aspirin:')
+for inc in vdw_result.increments:
+    print('\tatom index: ' + str(inc.atom_index) + ', increment: ' + str(inc.increment))
+#display(export_mol(vdw_result.molecule_3d, 'svg'))
+print()
+print('ASA surface area of aspirin: ' + str(asa_result.surface_area))
+print('ASA of atoms with positive partial charge: ' + str(asa_result.asa_plus))
+print('ASA of atoms with negative partial charge: ' + str(asa_result.asa_negative))
+print('ASA of hydrophobic atoms (|partial charge| < 0.125): ' + str(asa_result.asa_hydrophobic))
+print('ASA of polar atoms (|partial charge| >= 0.125): ' + str(asa_result.asa_polar))
