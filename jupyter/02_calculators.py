@@ -255,6 +255,42 @@ advanced_options.protect_double_bond_stereo = True
 major_tautomer(mol, options=advanced_options)
 
 # %% [markdown]
+# ### **Resonance calculation**
+#
+# The resonance plugin enumerates the resonant (mesomeric) structures of a molecule — the set of
+# Lewis structures that differ only in the distribution of the electrons, not in the position of the
+# atoms. By default `resonance_structures` returns only the *major contributors*, filters out
+# symmetrical duplicates and generates at most 1000 structures.
+
+# %%
+from chemaxon.io import import_mol
+from chemaxon.calculations import resonant_structures, canonical_resonant_structure
+
+mol = import_mol('[O-]C(=O)C1=CC=CC=C1')
+result = resonant_structures(mol)
+for res in result:
+    display(res)
+
+# %% [markdown]
+# Pass `major_contributors_only=False` to obtain every contributor, and `symmetry_filtering=False`
+# to keep symmetrical duplicates. `max_structures` caps the number of generated structures.
+
+# %%
+mol = import_mol('[O-]C(=O)C([O-])=O')
+all_contributors = resonant_structures(mol, major_contributors_only=False, symmetry_filtering=False)
+major_contributors = resonant_structures(mol)
+print(f'{len(all_contributors)} contributors in total, {len(major_contributors)} of them major')
+
+# %% [markdown]
+# `canonical_resonant_structure` returns a single, canonical representative form, which is useful
+# for example for structure indexing and searching. Set `clean_structure=True` to lay the result
+# out in 2D.
+
+# %%
+mol = import_mol('[O-]C(=O)C1=CC=CC=C1')
+canonical_resonant_structure(mol, clean_structure=True)
+
+# %% [markdown]
 # ### **Geometrical calculations**
 
 # %% [markdown]
