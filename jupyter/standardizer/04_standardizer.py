@@ -52,7 +52,7 @@ Standardizer('clean3d..aromatize..clean2d').standardize(viagra)
 Standardizer('replaceatoms:queryatom=C:replaceatom=[Si]').standardize(viagra)
 
 # %%
-with open('mol_w_sgroups.mol', 'r') as file:
+with open('../mol_w_sgroups.mol', 'r') as file:
     mol_str = file.read()
 
 mol_w_sgroups = import_mol(mol_str)

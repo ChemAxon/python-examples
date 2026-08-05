@@ -19,7 +19,7 @@
 # %%
 import pandas
 
-mols = pandas.read_table('nci1000.smiles', names=['SMILES', 'NCI_ID'])
+mols = pandas.read_table('../nci1000.smiles', names=['SMILES', 'NCI_ID'])
 mols
 
 # %%

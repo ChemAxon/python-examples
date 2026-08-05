@@ -52,7 +52,7 @@ print(export_mol(mol, 'mol'))
 # %%
 from chemaxon.io import open_for_import
 
-with open_for_import('nci1000.smiles') as mol_iterator:
+with open_for_import('../nci1000.smiles') as mol_iterator:
     mols = list(mol_iterator)
 
 len(mols)
@@ -66,11 +66,11 @@ mols[598]
 # %%
 from chemaxon.io import open_for_export, open_for_import
 
-with open_for_export('nci1000.mrv', 'mrv') as exporter:
+with open_for_export('../nci1000.mrv', 'mrv') as exporter:
     export_res = all(exporter.write(m) for m in mols)
 
 # test exported file:
-with open_for_import('nci1000.mrv') as importer:
+with open_for_import('../nci1000.mrv') as importer:
     mol_reimp = list(importer)
 
 len(mol_reimp)
@@ -100,7 +100,7 @@ import_mol('c1ccccc1', True) # erroneous parametrization raises TypeError
 # %%
 from chemaxon.io import open_for_import
 
-with open_for_import('mol_with_properties.sdf') as mol_iterator:
+with open_for_import('../mol_with_properties.sdf') as mol_iterator:
     mols = list(mol_iterator)
 
 mols[0]
@@ -108,7 +108,7 @@ mols[0]
 # %%
 from chemaxon.io import open_for_import
 
-with open_for_import('mol_with_properties.sdf') as mol_iterator:
+with open_for_import('../mol_with_properties.sdf') as mol_iterator:
     mols = list(mol_iterator)
 
 mol = mols[0]

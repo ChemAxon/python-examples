@@ -86,7 +86,7 @@ import sys
 # %%
 import pandas
 
-mols = pandas.read_table('nci1000.smiles', names=['SMILES', 'NCI_ID'])
+mols = pandas.read_table('../nci1000.smiles', names=['SMILES', 'NCI_ID'])
 mols
 
 # %%
@@ -116,7 +116,7 @@ print('BBB score:          ', bbb(mol).score)
 print('CNS MPO score:      ', cns_mpo(mol).score)
 
 # %%
-mols_admet = pandas.read_table('nci50.smiles', names=['SMILES', 'NCI_ID'])
+mols_admet = pandas.read_table('../nci50.smiles', names=['SMILES', 'NCI_ID'])
 
 mols_admet['HERG classification'] = mols_admet.apply(lambda row: 'SAFE' if herg_classification(import_mol(row['SMILES'])).classification == 0 else 'TOXIC', axis = 'columns')
 mols_admet['HERG activity'] = mols_admet.apply(lambda row: herg_activity(import_mol(row['SMILES'])).value, axis = 'columns')

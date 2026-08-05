@@ -29,7 +29,7 @@ from chemaxon.io import import_mol, open_for_import
 mol = import_mol('CC(=O)NC1=CC=C(O)C=C1')
 
 mol_lst = []
-with open_for_import('mol_w_sgroups.mol') as mol_importer:
+with open_for_import('../mol_w_sgroups.mol') as mol_importer:
     for m in mol_importer:
         mol_lst.append(m)
 
@@ -44,7 +44,7 @@ df_mols
 # %%
 from chemaxon.pandasutil import load_molecules_for_pandas, prepare_molecules_for_pandas
 
-df_mols_2 = pd.DataFrame(data=load_molecules_for_pandas('mol_w_sgroups.mol'))
+df_mols_2 = pd.DataFrame(data=load_molecules_for_pandas('../mol_w_sgroups.mol'))
 df_mols_2
 
 # %% [markdown]
@@ -54,7 +54,7 @@ df_mols_2
 from chemaxon.pandasutil import prepare_molecules_for_pandas
 
 mol_lst_with_properties = []
-with open_for_import('mol_with_properties.sdf') as mol_importer:
+with open_for_import('../mol_with_properties.sdf') as mol_importer:
     for m in mol_importer:
         mol_lst_with_properties.append(m)
 
@@ -67,15 +67,15 @@ df_mols_with_properties
 # %%
 from chemaxon.pandasutil import mol_to_svg_formatter
 
-df_mols.to_html('web_view.html', escape=False, formatters=dict(molecule=mol_to_svg_formatter))
+df_mols.to_html('../web_view.html', escape=False, formatters=dict(molecule=mol_to_svg_formatter))
 
 # %% [markdown]
 # HTML output combined with molecules loaded from an input file. File load is parametrized in order to see the exported molecule in the _cxsmiles_ column:
 
 # %%
 from chemaxon.pandasutil import mol_to_svg_formatter
-df_mol_with_custom_columns = pd.DataFrame(data=load_molecules_for_pandas(file_path='mol_w_sgroups.mol', mol_obj_column="mols", mol_str_column="cxsmiles"))
-df_mol_with_custom_columns.to_html('web_view_cxsmiles_column.html', escape=False, formatters=dict(mols=mol_to_svg_formatter))
+df_mol_with_custom_columns = pd.DataFrame(data=load_molecules_for_pandas(file_path='../mol_w_sgroups.mol', mol_obj_column="mols", mol_str_column="cxsmiles"))
+df_mol_with_custom_columns.to_html('../web_view_cxsmiles_column.html', escape=False, formatters=dict(mols=mol_to_svg_formatter))
 
 # %% [markdown]
 # Since the `Molecule` objects are being stored in the `DataFrame`, not just their representation, you can easily calculate properties for them and store the results in new columns.
@@ -105,7 +105,7 @@ df
 # %%
 from chemaxon.io import open_for_import
 
-with open_for_import('mol_with_properties.sdf') as mol_iterator:
+with open_for_import('../mol_with_properties.sdf') as mol_iterator:
     mols = list(mol_iterator)
 
 d = {'molecule': mols }
