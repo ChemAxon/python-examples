@@ -108,3 +108,28 @@ substructure_search = MoleculeSearch()
 start = time.time()
 hits = [substructure_search.find(query, t) for  t in targets*5000 ]
 time.time()-start
+
+# %% [markdown]
+# ### **Find all hits**
+#
+# `find_all` returns every distinct mapping of the query onto the target (including symmetry-equivalent ones), unlike `find`, which stops at the first hit.
+
+# %%
+from chemaxon.io import import_mol
+from chemaxon.search import MoleculeSearch
+
+query = import_mol('c1ccccc1')
+target = import_mol('c1ccc2ccccc2c1')  # naphthalene: two fused benzene rings
+
+all_hits = MoleculeSearch().find_all(query, target, True)
+print('Number of hits:', len(all_hits))
+print('Hit indices: ', [hit.hit_indices for hit in all_hits])
+for hit in all_hits:
+    display(hit.colored_hit)
+
+# %% [markdown]
+# The `limit` parameter caps the number of hits collected, which is useful when only a bounded number of matches is needed:
+
+# %%
+limited_hits = MoleculeSearch().find_all(query, target, limit=1)
+len(limited_hits)
