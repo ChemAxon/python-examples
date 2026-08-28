@@ -397,3 +397,119 @@ print('ASA of atoms with positive partial charge: ' + str(asa_result.asa_plus))
 print('ASA of atoms with negative partial charge: ' + str(asa_result.asa_negative))
 print('ASA of hydrophobic atoms (|partial charge| < 0.125): ' + str(asa_result.asa_hydrophobic))
 print('ASA of polar atoms (|partial charge| >= 0.125): ' + str(asa_result.asa_polar))
+
+# %% [markdown]
+# ### **Refractivity calculation**
+#
+# Molar refractivity is a descriptor of the molecular volume and the London dispersive forces playing a role in drug-receptor interactions. For more information, check the [public documentation](https://docs.chemaxon.com/latest/calculators_refractivity-plugin.html).
+
+# %%
+from chemaxon.io import import_mol
+from chemaxon.calculations import refractivity
+
+mol_refr = import_mol('CC(=O)OC1=CC=CC=C1C(O)=O')  # aspirin
+
+result = refractivity(mol_refr)
+
+print('The molecule: (aspirin)')
+display(mol_refr)
+print('Molar refractivity:', result.molar_refractivity)
+print('Atomic refractivity increments:')
+for value in result.refractivity_values:
+    print('	atom index:', value.atom_index, ', refractivity:', value.refractivity,
+          ', hydrogen refractivity:', value.hydrogen_refractivity)
+
+# %% [markdown]
+# ### **Geometrical Descriptors calculation**
+#
+# Molecule-scope 3D descriptors of a conformation (Dreiding and MMFF94 strain energy, minimal/maximal projection area and radius, minZ/maxZ, van der Waals volume), plus atom-level distance/angle/dihedral measurements and per-atom steric hindrance. A 3D conformer is generated automatically for input without 3D coordinates. For more information, check the [public documentation](https://docs.chemaxon.com/latest/calculators_geometrical-descriptors-plugin.html).
+
+# %%
+from chemaxon.io import import_mol
+from chemaxon.calculations import geometrical_descriptors
+
+mol_geom = import_mol('CC(=O)OC1=CC=CC=C1C(O)=O')  # aspirin
+
+result = geometrical_descriptors(mol_geom)
+
+print('The molecule: (aspirin)')
+display(mol_geom)
+print('Dreiding energy:', result.dreiding_energy)
+print('MMFF94 energy:', result.mmff94_energy)
+print('Minimal projection area:', result.minimal_projection_area)
+print('Maximal projection area:', result.maximal_projection_area)
+print('Volume:', result.volume)
+
+# %% [markdown]
+# The plugin also exposes standalone atom-level measurements (distance, angle, dihedral) and steric hindrance:
+
+# %%
+from chemaxon.calculations import distance, angle, dihedral, steric_hindrance
+
+print('Distance between atom 0 and atom 1:', distance(mol_geom, 0, 1))
+print('Angle at atom 1 (atoms 0-1-2):', angle(mol_geom, 0, 1, 2))
+print('Dihedral of atoms 0-1-2-3:', dihedral(mol_geom, 0, 1, 2, 3))
+print('Steric hindrance per atom:')
+for value in steric_hindrance(mol_geom):
+    print('	atom index:', value.atom_index, ', value:', value.value)
+
+# %% [markdown]
+# ### **Structural Frameworks calculation**
+#
+# Reduces a molecule to a structural framework (scaffold), such as the Bemis-Murcko scaffold or a ring system, by stripping side chains, generalizing atoms/bonds or selecting ring systems. For more information, check the [public documentation](https://docs.chemaxon.com/display/docs/calculators_structural-frameworks-plugin.html).
+
+# %%
+from chemaxon.io import import_mol
+from chemaxon.calculations import structural_framework, FrameworkType
+
+mol_scaffold = import_mol('CC(=O)OC1=CC=CC=C1C(O)=O')  # aspirin
+
+print('The molecule: (aspirin)')
+display(mol_scaffold)
+
+bemis_murcko = structural_framework(mol_scaffold, framework_type=FrameworkType.BEMIS_MURCKO)
+print('Bemis-Murcko framework:')
+display(bemis_murcko)
+
+ring_systems = structural_framework(mol_scaffold, framework_type=FrameworkType.ALL_RING_SYSTEMS)
+print('All ring systems:')
+display(ring_systems)
+
+# %% [markdown]
+# ### **Hydrogen Bond Donor/Acceptor (HBDA) calculation**
+#
+# For more information, check the [public documentation](https://docs.chemaxon.com/latest/calculators_hydrogen-bond-donor-acceptor-plugin.html).
+
+# %%
+from chemaxon.io import import_mol
+from chemaxon.calculations import hbda
+
+mol_hbda = import_mol('CC(=O)NC1=CC=C(O)C=C1')  # paracetamol
+
+result = hbda(mol_hbda)
+
+print('The molecule: (paracetamol)')
+display(mol_hbda)
+print('Donor atom count:', result.donor_atom_count)
+print('Acceptor atom count:', result.acceptor_atom_count)
+print('Donor site count:', result.donor_site_count)
+print('Acceptor site count:', result.acceptor_site_count)
+print('Per-atom donor/acceptor counts:')
+for value in result.atom_values:
+    print('	atom index:', value.atom_index, ', donor count:', value.donor_count,
+          ', acceptor count:', value.acceptor_count)
+
+# %% [markdown]
+# The donor/acceptor counts can also be calculated for the major microspecies over a pH range:
+
+# %%
+from chemaxon.calculations import hbda_ph_range, PhRange
+import matplotlib.pyplot as pyplt
+
+ph_results = hbda_ph_range(mol_hbda, PhRange(0, 14, 0.5))
+pyplt.plot([r.ph for r in ph_results], [r.donor_count for r in ph_results], label='Donor count')
+pyplt.plot([r.ph for r in ph_results], [r.acceptor_count for r in ph_results], label='Acceptor count')
+pyplt.title('HBDA counts by pH (paracetamol)')
+pyplt.xlabel('pH')
+pyplt.ylabel('Count')
+pyplt.legend()
