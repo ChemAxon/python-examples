@@ -38,6 +38,32 @@ mol = import_mol('aspirin')
 pka_result = pka(mol)
 pka_result.mol
 
+# %% [markdown]
+# ### **Visualizing atom-index-based results**
+#
+# Many calculations return a value for every atom (e.g. `pka_result.pka_values` above).
+# `visualize_atom_values` renders any such per-atom result as an SVG image, placing each
+# value next to its atom - just pass the molecule and the result list. Since `pka_values`
+# isn't rounded, we round it to `AtomDoubleValue`s here for a cleaner-looking label.
+
+# %%
+from IPython.display import SVG
+from chemaxon.io import visualize_atom_values
+from chemaxon.calculations import AtomDoubleValue
+
+rounded_pka_values = [AtomDoubleValue(v.atom_index, round(v.value, 2)) for v in pka_result.pka_values]
+SVG(visualize_atom_values(mol, rounded_pka_values))
+
+# %% [markdown]
+# When a result type carries more than one value per atom (e.g. `ChargeValue` has both
+# `formal_charge` and `total_charge`), pass `value_attribute` to pick which one to display. You can change the precision of the value rounding through the function `precision` parameter:
+
+# %%
+from chemaxon.calculations import charge_by_atoms, ChargeValue
+
+charge_result = charge_by_atoms(mol)
+SVG(visualize_atom_values(mol, charge_result.charge_values, value_attribute='total_charge', precision=3))
+
 # %%
 import sys
 
@@ -183,13 +209,13 @@ result = conformers(mol)
 display_result(result)
 
 # %%
-from chemaxon.calculations import ConformerOptions, ConformerForceField, ConformerEnergyUnit, ConformerOptimization
+from chemaxon.calculations import ConformerOptions, ConformerForceField, EnergyUnit, OptimizationLimit
 
 options = ConformerOptions()
 options.max_number_of_conformers = 3
-options.energy_unit = ConformerEnergyUnit.KJ_PER_MOL
+options.energy_unit = EnergyUnit.KJ_PER_MOL
 options.force_field = ConformerForceField.MMFF94
-options.optimization_limit = ConformerOptimization.VERY_STRICT
+options.optimization_limit = OptimizationLimit.VERY_STRICT
 result = conformers(mol, options=options)
 display_result(result)
 
@@ -317,11 +343,12 @@ print('Polar Surface Area value: ' + str(psa_value))
 # Several methods are available that are based on the Hückel Molecular Orbital (HMO) theorem/method. An example for each on a `chemaxon.Molecule` (these can also be calculated on specific pH values):
 
 # %%
+from IPython.display import SVG
 from chemaxon.calculations import (hmo_electrophilic_localization_energy,
                                     hmo_nucleophilic_localization_energy, hmo_electron_density,
                                     hmo_charge_density, hmo_electrophilic_order,
                                     hmo_nucleophilic_order, hmo_pi_energy)
-from chemaxon.io import import_mol
+from chemaxon.io import import_mol, visualize_atom_values
 
 mol_hmo = import_mol('CN1C=NC2=C1C(=O)NC(=O)N2C')
 
@@ -333,42 +360,31 @@ electr_ord = hmo_electrophilic_order(mol_hmo)
 nucl_ord = hmo_nucleophilic_order(mol_hmo)
 pi_energy = hmo_pi_energy(mol_hmo)
 
-print('The molecule:\n')
-display(toluene)
-print()
-
-print('L(+) localization energy by atom indices:')
-for hmo_val in electr_localization_energy:
-    print('\t ' + str(hmo_val.atom_index) + ': ' + str(hmo_val.value))
-
-print()
-
-print('L(-) localization energy by atom indices:')
-for hmo_val in nucleo_localization_energy:
-    print('\t ' + str(hmo_val.atom_index) + ': ' + str(hmo_val.value))
-
-print()
-print('Electrophilic densities by atom indices:')
-for hmo_val in electr_dens:
-    print('\t ' + str(hmo_val.atom_index) + ': ' + str(hmo_val.value))
-
-print()
-print('Charge densities by atom indices:')
-for hmo_val in ch_dens:
-    print('\t ' + str(hmo_val.atom_index) + ': ' + str(hmo_val.value))
-
-print()
-print('E(+) orders by atom indices:')
-for hmo_val in electr_ord:
-    print('\t ' + str(hmo_val.atom_index) + ': ' + str(hmo_val.order))
-
-print()
-print('Nu(-) orders by atom indices:')
-for hmo_val in nucl_ord:
-    print('\t ' + str(hmo_val.atom_index) + ': ' + str(hmo_val.order))
-
-print()
 print('Pi energy: '+ str(pi_energy))
+
+# %%
+print('L(+) localization energy by atom indices:')
+SVG(visualize_atom_values(mol_hmo, electr_localization_energy))
+
+# %%
+print('L(-) localization energy by atom indices:')
+SVG(visualize_atom_values(mol_hmo, nucleo_localization_energy))
+
+# %%
+print('Electrophilic densities by atom indices:')
+SVG(visualize_atom_values(mol_hmo, electr_dens))
+
+# %%
+print('Charge densities by atom indices:')
+SVG(visualize_atom_values(mol_hmo, ch_dens))
+
+# %%
+print('E(+) orders by atom indices:')
+SVG(visualize_atom_values(mol_hmo, electr_ord))
+
+# %%
+print('Nu(-) orders by atom indices:')
+SVG(visualize_atom_values(mol_hmo, nucl_ord))
 
 # %% [markdown]
 # ### **Molecular Surface Area 3D**
@@ -387,16 +403,18 @@ vdw_result = van_der_waals_surface_area(aspirin)
 asa_result = solvent_accessible_surface_area(aspirin)
 
 print('van der Waals surface area of aspirin: ' + str(vdw_result.surface_area))
-print('van der Waals increments of aspirin:')
-for inc in vdw_result.increments:
-    print('\tatom index: ' + str(inc.atom_index) + ', increment: ' + str(inc.increment))
-#display(export_mol(vdw_result.molecule_3d, 'svg'))
-print()
 print('ASA surface area of aspirin: ' + str(asa_result.surface_area))
 print('ASA of atoms with positive partial charge: ' + str(asa_result.asa_plus))
 print('ASA of atoms with negative partial charge: ' + str(asa_result.asa_negative))
 print('ASA of hydrophobic atoms (|partial charge| < 0.125): ' + str(asa_result.asa_hydrophobic))
 print('ASA of polar atoms (|partial charge| >= 0.125): ' + str(asa_result.asa_polar))
+
+# %%
+from IPython.display import SVG
+from chemaxon.io import visualize_atom_values
+
+print('van der Waals increments of aspirin:')
+SVG(visualize_atom_values(aspirin, vdw_result.increments))
 
 # %% [markdown]
 # ### **Refractivity calculation**
@@ -414,10 +432,20 @@ result = refractivity(mol_refr)
 print('The molecule: (aspirin)')
 display(mol_refr)
 print('Molar refractivity:', result.molar_refractivity)
+
+# %%
+from IPython.display import SVG
+from chemaxon.io import visualize_atom_values
+
 print('Atomic refractivity increments:')
-for value in result.refractivity_values:
-    print('	atom index:', value.atom_index, ', refractivity:', value.refractivity,
-          ', hydrogen refractivity:', value.hydrogen_refractivity)
+SVG(visualize_atom_values(mol_refr, result.refractivity_values, value_attribute='refractivity'))
+
+# %%
+from IPython.display import SVG
+from chemaxon.io import visualize_atom_values
+
+print('Atomic hydrogen refractivity increments:')
+SVG(visualize_atom_values(mol_refr, result.refractivity_values, value_attribute='hydrogen_refractivity'))
 
 # %% [markdown]
 # ### **Geometrical Descriptors calculation**
@@ -449,9 +477,13 @@ from chemaxon.calculations import distance, angle, dihedral, steric_hindrance
 print('Distance between atom 0 and atom 1:', distance(mol_geom, 0, 1))
 print('Angle at atom 1 (atoms 0-1-2):', angle(mol_geom, 0, 1, 2))
 print('Dihedral of atoms 0-1-2-3:', dihedral(mol_geom, 0, 1, 2, 3))
+
+# %%
+from IPython.display import SVG
+from chemaxon.io import visualize_atom_values
+
 print('Steric hindrance per atom:')
-for value in steric_hindrance(mol_geom):
-    print('	atom index:', value.atom_index, ', value:', value.value)
+SVG(visualize_atom_values(mol_geom, steric_hindrance(mol_geom)))
 
 # %% [markdown]
 # ### **Structural Frameworks calculation**
@@ -494,10 +526,20 @@ print('Donor atom count:', result.donor_atom_count)
 print('Acceptor atom count:', result.acceptor_atom_count)
 print('Donor site count:', result.donor_site_count)
 print('Acceptor site count:', result.acceptor_site_count)
-print('Per-atom donor/acceptor counts:')
-for value in result.atom_values:
-    print('	atom index:', value.atom_index, ', donor count:', value.donor_count,
-          ', acceptor count:', value.acceptor_count)
+
+# %%
+from IPython.display import SVG
+from chemaxon.io import visualize_atom_values
+
+print('Per-atom donor counts:')
+SVG(visualize_atom_values(mol_hbda, result.atom_values, value_attribute='donor_count'))
+
+# %%
+from IPython.display import SVG
+from chemaxon.io import visualize_atom_values
+
+print('Per-atom acceptor counts:')
+SVG(visualize_atom_values(mol_hbda, result.atom_values, value_attribute='acceptor_count'))
 
 # %% [markdown]
 # The donor/acceptor counts can also be calculated for the major microspecies over a pH range:
