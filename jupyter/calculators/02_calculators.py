@@ -43,7 +43,8 @@ pka_result.mol
 #
 # Many calculations return a value for every atom (e.g. `pka_result.pka_values` above).
 # Function `visualize_atom_values` renders such per-atom results as an SVG image placing each
-# value next to its atom. Required parameters are the molecule and the result list. Since `pka_values`
+# value next to its atom. Required parameters are the molecule and the result list. The result list 
+# should consist of objects containing an `atom_index` field and one or more fields containing int or double results. Since `pka_values`
 # isn't rounded, it can be rounded by setting the `precision` parameter (default value is `2`).
 
 # %%
