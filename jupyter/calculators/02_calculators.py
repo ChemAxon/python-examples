@@ -42,9 +42,9 @@ pka_result.mol
 # ### **Visualizing atom-index-based results**
 #
 # Many calculations return a value for every atom (e.g. `pka_result.pka_values` above).
-# `visualize_atom_values` renders any such per-atom result as an SVG image, placing each
-# value next to its atom - just pass the molecule and the result list. Since `pka_values`
-# isn't rounded, we can round them by setting the `precision` parameter accordingly (default value is `2`).
+# Function `visualize_atom_values` renders such per-atom results as an SVG image placing each
+# value next to its atom. Required parameters are the molecule and the result list. Since `pka_values`
+# isn't rounded, it can be rounded by setting the `precision` parameter (default value is `2`).
 
 # %%
 from IPython.display import SVG
@@ -54,8 +54,8 @@ from chemaxon.calculations import AtomDoubleValue
 SVG(visualize_atom_values(mol,  pka_result.pka_values, precision=2))
 
 # %% [markdown]
-# When a result type carries more than one value per atom (e.g. `ChargeValue` has both
-# `formal_charge` and `total_charge`), pass `value_attribute` to pick which one to display. You can change the precision of the value rounding through the function `precision` parameter:
+# When the result list carries more than one value per atom (e.g. `ChargeValue` has both
+# `formal_charge` and `total_charge`), the `value_attribute` parameter should be used to pick the one to display:
 
 # %%
 from chemaxon.calculations import charge_by_atoms, ChargeValue
