@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.19.4
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -62,6 +62,13 @@ from chemaxon.calculations import charge_by_atoms, ChargeValue
 
 charge_result = charge_by_atoms(mol)
 SVG(visualize_atom_values(mol, charge_result.charge_values, value_attribute='total_charge', precision=3))
+
+# %% [markdown]
+# Visualized result can be exported to svg file as well using standard python functions: 
+
+# %%
+svg_content = visualize_atom_values(mol, charge_result.charge_values, value_attribute='total_charge', precision=3)
+with open("aspirinCharge.svg", "w") as f: f.write(svg_content)
 
 # %%
 import sys
